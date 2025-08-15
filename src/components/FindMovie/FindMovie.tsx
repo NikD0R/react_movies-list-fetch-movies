@@ -7,10 +7,11 @@ import classNames from 'classnames';
 import { MovieCard } from '../MovieCard';
 
 type Props = {
+  movies: Movie[];
   onAddMovie: (movie: Movie) => void;
 };
 
-export const FindMovie: React.FC<Props> = ({ onAddMovie }) => {
+export const FindMovie: React.FC<Props> = ({ onAddMovie, movies }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
@@ -100,6 +101,11 @@ export const FindMovie: React.FC<Props> = ({ onAddMovie }) => {
                 type="button"
                 className="button is-primary"
                 onClick={() => {
+                  if (movies.some(m => m.imdbId === movie.imdbID)) {
+                    setQuery('');
+                    setMovie(null);
+                  }
+
                   onAddMovie(normalizeMovie(movie));
                   setQuery('');
                   setMovie(null);
